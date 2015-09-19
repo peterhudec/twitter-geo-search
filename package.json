@@ -1,0 +1,19 @@
+{
+  "name": "twitter-search",
+  "version": "1.0.0",
+  "description": "Twitter search with maps.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peterhudec/twitter-search.git"
+  },
+  "author": "Peter Hudec",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/peterhudec/twitter-search/issues"
+  },
+  "homepage": "https://github.com/peterhudec/twitter-search#readme"
+}
