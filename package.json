@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/peterhudec/twitter-search/issues"
   },
-  "homepage": "https://github.com/peterhudec/twitter-search#readme"
+  "homepage": "https://github.com/peterhudec/twitter-search#readme",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
 }
