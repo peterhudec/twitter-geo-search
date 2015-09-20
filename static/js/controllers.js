@@ -12,27 +12,44 @@ tweetSearchApp.controller('TweetListController', function ($scope, $http) {
       }
   });
 
+  var success = function (data) {
+		console.log(data);
+		$scope.tweets = $scope.tweets.concat(data.statuses);
+		$scope.nextResultsQuerystring = data.search_metadata.next_results;
+
+		var geoTweets = data.statuses.filter(function (tweet) {
+        if (tweet.coordinates) {
+            return true;
+        }
+    });
+
+		$scope.allTweetsCount += data.statuses.length;
+		$scope.geoTweetsCount += geoTweets.length;
+	};
+
+	var error = function (err) {
+		console.log(err);
+	};
+
 	$scope.geoFilter = function (item) {
 		return !$scope.showGeo || item.coordinates !== null;
 	};
 
 	$scope.search = function () {
-		console.log($scope.query);
+		$scope.tweets = [];
+		$scope.allTweetsCount = 0;
+		$scope.geoTweetsCount = 0;
 
 		$http.get('search', {
-				params: {
-					q: $scope.query
-				}
-			})
-			.success(function (data) {
-				console.log(data);
-				$scope.tweets = data.data.statuses;
-				$scope.allTweetsCount = data.data.statuses.length;
-				$scope.geoTweetsCount = data.geoTweetsCount;
-			})
-			.error(function (err) {
-				console.log(err);
-			});
+			params: {
+				q: $scope.query
+			}
+		}).success(success).error(error);
+	};
+
+	$scope.next = function() {
+		$http.get('next' + $scope.nextResultsQuerystring, {}).success(success).error(error);
+		delete $scope.nextResultsQuerystring;
 	};
 });
 
