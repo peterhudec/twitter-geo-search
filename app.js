@@ -6,6 +6,7 @@ var twitter = new Twitter(require('./config'));
 var express = require('express');
 var app = express();
 app.use(express.static('static'));
+app.use(express.static('node_modules'));
 
 var success = function (req, res, requests, allCnt, geoTweets) {
     var max_requests = req.query.max_requests || 1;
