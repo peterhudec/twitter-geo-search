@@ -56,7 +56,7 @@ app.get('/search', function (req, res) {
     twitter.getSearch({
         q: req.query.q,
         count: 100,
-        result_type: 'recent'
+        result_type: 'recent',
         // ,
         // geocode: '0,0,99999mi'
     }, error(req, res), success(req, res));

@@ -1,13 +1,33 @@
 <!doctype html>
-<html lang="en" ng-app>
-<head>
-  <meta charset="utf-8">
-  <title>Twitter Search</title>
-  <script src="/angular/angular.js"></script>
-</head>
-<body>
+<html lang="en" ng-app="tweetSearchApp">
+	<head>
+		<meta charset="utf-8">
+		<title>Twitter Search</title>
+		<script src="/angular/angular.js"></script>
+		<script src="/js/controllers.js"></script>
+		<link rel="stylesheet" type="text/css" href="/css/style.css">
+	</head>
+	<body ng-controller="TweetListController">
+		<form ng-submit="search()">
+			<input ng-model="query" ng-init="query = '#burningman'"/>
+			<input type="submit"/>
+		</form>
 
-  <p>Nothing here {{'yet' + '!'}}</p>
+		<div>
+			<div>All tweets: {{ allTweetsCount }}</div>
+			<div>Geo tweets: {{ geoTweetsCount }}</div>
 
-</body>
+			<label for="geoFilter">Show only geo tweets: </label>
+			<input id="geoFilter" type="checkbox" ng-model="showGeo" ng-init="showGeo=true">
+
+			{{ showGeo }}
+		</div>
+
+		<ul>
+			<li ng-repeat="tweet in tweets | filter:geoFilter" ng-class="{geo: tweet.coordinates !== null}">
+				<h2>{{ tweet.user.name }}</h2>
+				<p>{{ tweet.text }}</p>
+			</li>
+		</ul>
+	</body>
 </html>
