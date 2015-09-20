@@ -1,12 +1,12 @@
 var tweetSearchApp = angular.module('tweetSearchApp', ["leaflet-directive", "infinite-scroll"]);
 
-tweetSearchApp.controller('TweetListController', function ($scope, $http) {
+tweetSearchApp.controller('TweetListController', ['$scope', '$http', 'leafletData', function ($scope, $http, leafletData) {
 	angular.extend($scope, {
 			loading: false,
-      center: {
-          lat: 40.095,
-          lng: -3.823,
-          zoom: 4
+      formMapCenter: {
+          lat: 0,
+          lng: 0,
+          zoom: 2
       },
       defaults: {
           scrollWheelZoom: false
@@ -35,8 +35,9 @@ tweetSearchApp.controller('TweetListController', function ($scope, $http) {
 	};
 
 	var error = function (err) {
-		$scope.error = JSON.parse(err.data);
-		console.log($scope.error.messages);
+		console.log('error', err);
+		$scope.error = JSON.parse(err);
+		console.log($scope.error);
 	};
 
 	$scope.geoFilter = function (item) {
@@ -44,15 +45,22 @@ tweetSearchApp.controller('TweetListController', function ($scope, $http) {
 	};
 
 	$scope.search = function () {
+		delete $scope.error;
 		$scope.tweets = [];
 		$scope.allTweetsCount = 0;
 		$scope.geoTweetsCount = 0;
 
-		$http.get('search', {
-			params: {
-				q: $scope.query
-			}
-		}).success(success).error(error);
+		var params ={
+			q: $scope.query
+		}
+
+		if ($scope.enableGeolocation) {
+			angular.extend(params, {
+				geocode: $scope.formMapCenter.lat + ',' + $scope.formMapCenter.lng + ',30000mi'
+			});
+		}
+
+		$http.get('search', {params: params}).success(success).error(error);
 		$scope.loading = true;
 	};
 
@@ -62,7 +70,7 @@ tweetSearchApp.controller('TweetListController', function ($scope, $http) {
 			$scope.loading = true;
 		}
 	};
-});
+}]);
 
 tweetSearchApp.controller('ItemController', function ($scope) {
 	

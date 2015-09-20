@@ -10,7 +10,9 @@ app.use(express.static('node_modules'));
 
 var error = function (req, res) {
     return function (err, response, body) {
-        res.json(err);
+        console.log('ERROR: %s', err.data);
+        res.status(err.statusCode);
+        res.json(err.data);
     };
 };
 
@@ -25,8 +27,7 @@ app.get('/search', function (req, res) {
         q: req.query.q,
         count: 100,
         result_type: 'recent',
-        // ,
-        // geocode: '40.7859263,-119.2058748,10mi' // burning man coordinates
+        geocode: req.query.geocode
     }, error(req, res), success(req, res));
 });
 

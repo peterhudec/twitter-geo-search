@@ -18,15 +18,31 @@
 			<input type="submit"/>
 		</form>
 
-		<leaflet style="width: 500px; height: 300px" center="center" ></leaflet>
-
 		<div>
+			<div ng-show="error">
+				ERRORS:
+				<ul>
+					<li ng-repeat="error in error.errors">{{ error.message }}</li>
+				</ul>
+			</div>
+			<hr/>
+
 			<div>All tweets: {{ allTweetsCount }}</div>
 			<div>Geo tweets: {{ geoTweetsCount }}</div>
 			<div>Displayed: {{ filtered.length }}</div>
 
-			<label for="geoFilter">Show only geo tweets: </label>
-			<input id="geoFilter" type="checkbox" ng-model="showGeo" ng-init="showGeo=true">
+
+			<label for="geolocation">Prefere tweets from specific location: </label>
+			<input id="geolocation" type="checkbox" ng-model="enableGeolocation" ng-init="enableGeolocation=false">
+
+			<leaflet style="width: 500px; height: 300px" center="formMapCenter" ></leaflet>
+
+			<div>map lat: {{ formMapCenter.lat }}</div>
+			<div>map lng: {{ formMapCenter.lng }}</div>
+			<div>map zoom: {{ formMapCenter.zoom }}</div>
+
+			<label for="geofilter">Show only geo tweets: </label>
+			<input id="geofilter" type="checkbox" ng-model="showGeo" ng-init="showGeo=true">
 
 			{{ showGeo }}
 		</div>
