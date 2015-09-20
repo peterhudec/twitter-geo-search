@@ -25,26 +25,29 @@
 					<li ng-repeat="error in error.errors">{{ error.message }}</li>
 				</ul>
 			</div>
+
 			<hr/>
 
 			<div>All tweets: {{ allTweetsCount }}</div>
 			<div>Geo tweets: {{ geoTweetsCount }}</div>
-			<div>Displayed: {{ filtered.length }}</div>
 
-
-			<label for="geolocation">Prefere tweets from specific location: </label>
-			<input id="geolocation" type="checkbox" ng-model="enableGeolocation" ng-init="enableGeolocation=false">
-
-			<leaflet style="width: 500px; height: 300px" center="formMapCenter" ></leaflet>
-
-			<div>map lat: {{ formMapCenter.lat }}</div>
-			<div>map lng: {{ formMapCenter.lng }}</div>
-			<div>map zoom: {{ formMapCenter.zoom }}</div>
+			<div ng-show="geoTweetsCount / allTweetsCount < 0.5">
+				Only {{ geoTweetsCount / allTweetsCount }}% of found tweets have geolocation information.
+				You could get better ratio, if you set prefered location in the map below:
+			</div>
 
 			<label for="geofilter">Show only geo tweets: </label>
 			<input id="geofilter" type="checkbox" ng-model="showGeo" ng-init="showGeo=true">
 
-			{{ showGeo }}
+			<hr/>
+
+			<label for="geolocation">Prefere tweets from specific location: </label>
+			<input id="geolocation" type="checkbox" ng-model="enableGeolocation" ng-init="enableGeolocation=false">
+			<leaflet style="width: 500px; height: 300px" center="formMapCenter" ></leaflet>
+			<div>map lat: {{ formMapCenter.lat }}</div>
+			<div>map lng: {{ formMapCenter.lng }}</div>
+
+			<hr/>
 		</div>
 
 		<ul infinite-scroll="next()" infinite-scroll-distance="0.3">

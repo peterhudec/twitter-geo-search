@@ -3,6 +3,8 @@ var tweetSearchApp = angular.module('tweetSearchApp', ["leaflet-directive", "inf
 tweetSearchApp.controller('TweetListController', ['$scope', '$http', 'leafletData', function ($scope, $http, leafletData) {
 	angular.extend($scope, {
 			loading: false,
+			allTweetsCount: 0,
+			geoTweetsCount: 0,
       formMapCenter: {
           lat: 0,
           lng: 0,
