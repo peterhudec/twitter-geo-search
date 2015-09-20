@@ -4,7 +4,11 @@
 		<meta charset="utf-8">
 		<title>Twitter Search</title>
 		<script src="/angular/angular.js"></script>
+		<script src="/leaflet/dist/leaflet.js"></script>
+		<script src="/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
 		<script src="/js/controllers.js"></script>
+
+		<link rel="stylesheet" href="/leaflet/dist/leaflet.css" />
 		<link rel="stylesheet" type="text/css" href="/css/style.css">
 	</head>
 	<body ng-controller="TweetListController">
@@ -12,6 +16,8 @@
 			<input ng-model="query" ng-init="query = '#burningman'"/>
 			<input type="submit"/>
 		</form>
+
+		<leaflet style="width: 500px; height: 300px" center="center" ></leaflet>
 
 		<div>
 			<div>All tweets: {{ allTweetsCount }}</div>
@@ -27,6 +33,9 @@
 			<li ng-repeat="tweet in tweets | filter:geoFilter" ng-class="{geo: tweet.coordinates !== null}">
 				<h2>{{ tweet.user.name }}</h2>
 				<p>{{ tweet.text }}</p>
+				<div ng-if="tweet.coordinates !== null" ng-controller="GeoItemController">
+					<leaflet class="map" center="center" markers="markers" id="tweet.id" ></leaflet>
+				</div>
 			</li>
 		</ul>
 	</body>
