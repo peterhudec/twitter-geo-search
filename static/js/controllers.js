@@ -1,7 +1,8 @@
-var tweetSearchApp = angular.module('tweetSearchApp', ["leaflet-directive"]);
+var tweetSearchApp = angular.module('tweetSearchApp', ["leaflet-directive", "infinite-scroll"]);
 
 tweetSearchApp.controller('TweetListController', function ($scope, $http) {
 	angular.extend($scope, {
+			loading: false,
       center: {
           lat: 40.095,
           lng: -3.823,
@@ -13,6 +14,7 @@ tweetSearchApp.controller('TweetListController', function ($scope, $http) {
   });
 
   var success = function (data) {
+		$scope.loading = false;
 		console.log(data);
 		$scope.tweets = $scope.tweets.concat(data.statuses);
 		$scope.nextResultsQuerystring = data.search_metadata.next_results;
@@ -25,10 +27,16 @@ tweetSearchApp.controller('TweetListController', function ($scope, $http) {
 
 		$scope.allTweetsCount += data.statuses.length;
 		$scope.geoTweetsCount += geoTweets.length;
+
+		if ($scope.filtered.length < 3) {
+			console.log('filtered', $scope.filtered.length);
+			$scope.next();
+		};
 	};
 
 	var error = function (err) {
-		console.log(err);
+		$scope.error = JSON.parse(err.data);
+		console.log($scope.error.messages);
 	};
 
 	$scope.geoFilter = function (item) {
@@ -45,12 +53,19 @@ tweetSearchApp.controller('TweetListController', function ($scope, $http) {
 				q: $scope.query
 			}
 		}).success(success).error(error);
+		$scope.loading = true;
 	};
 
 	$scope.next = function() {
-		$http.get('next' + $scope.nextResultsQuerystring, {}).success(success).error(error);
-		delete $scope.nextResultsQuerystring;
+		if ($scope.nextResultsQuerystring) {
+			$http.get('next' + $scope.nextResultsQuerystring, {}).success(success).error(error);
+			$scope.loading = true;
+		}
 	};
+});
+
+tweetSearchApp.controller('ItemController', function ($scope) {
+	
 });
 
 tweetSearchApp.controller('GeoItemController', function ($scope) {

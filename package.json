@@ -21,6 +21,7 @@
     "angular-leaflet-directive": "^0.8.5",
     "express": "^4.13.3",
     "leaflet": "^0.7.5",
+    "ng-infinite-scroll": "^1.2.0",
     "twitter-node-client": "0.0.6"
   }
 }
