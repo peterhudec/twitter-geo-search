@@ -11,7 +11,7 @@
         <script src="/leaflet/dist/leaflet.js"></script>
         <script src="/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
         <script src="/ng-infinite-scroll/build/ng-infinite-scroll.min.js"></script>
-        <script src="/angular-bootstrap-npm/dist/angular-bootstrap.min    .js"></script>
+        <script src="/angular-bootstrap-npm/dist/angular-bootstrap.min.js"></script>
         <script src="/js/controllers.js"></script>
 
         <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.min.css">
@@ -70,8 +70,8 @@
 
             <div class="row text-left" ng-show="(geoTweetsCount / allTweetsCount < 0.5) && !enableGeolocation">
                 <div class="col-md-8 col-md-offset-2">
-                    <div class="alert alert-info" role="alert">
-                        <div >
+       	            <div class="alert alert-info" role="alert">
+                        <div>
                             Only {{ geoTweetsCount / allTweetsCount * 100 | number : 1 }}% of found tweets have geolocation information.<br/>
                             You can get better ratio, if you turn on the <strong>set prefered location</strong> button above.
                         </div>
