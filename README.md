@@ -4,7 +4,7 @@ Simple geolocation aware Twitter search.
 
 ## Prerequisities
 
-- node.js locally installed
+You should have `node.js` installed.
 
 ## Setup
 
@@ -34,13 +34,13 @@ $ cp ./config-template.js ./config.js
 $ vim ./config.js
 ```
 
-Install dependencies
+Install dependencies.
 
 ```bash
 $ npm install
 ```
 
-Run the app
+Run the app.
 
 ```bash
 $ node ./app.js
