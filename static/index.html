@@ -1,63 +1,107 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" ng-app="tweetSearchApp">
 	<head>
 		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
 		<title>Twitter Search</title>
+
 		<script src="/angular/angular.js"></script>
 		<script src="/leaflet/dist/leaflet.js"></script>
 		<script src="/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
 		<script src="/ng-infinite-scroll/build/ng-infinite-scroll.min.js"></script>
+		<script src="/angular-bootstrap-npm/dist/angular-bootstrap.min	.js"></script>
 		<script src="/js/controllers.js"></script>
 
-		<link rel="stylesheet" href="/leaflet/dist/leaflet.css" />
+		<link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="/leaflet/dist/leaflet.css" />
 		<link rel="stylesheet" type="text/css" href="/css/style.css">
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	    <!--[if lt IE 9]>
+	      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	    <![endif]-->
 	</head>
 	<body ng-controller="TweetListController">
-		<form ng-submit="search()">
-			<input ng-model="query" ng-init="query = '#burningman'"/>
-			<input type="submit"/>
-		</form>
 
-		<div>
-			<div ng-show="error">
-				ERRORS:
-				<ul>
-					<li ng-repeat="error in error.errors">{{ error.message }}</li>
-				</ul>
-			</div>
+		<div class="jumbotron text-center">
+			<h1>Twitter Search</h1>
 
-			<hr/>
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<form ng-submit="search()">
+						<div class="input-group input-group-lg">
+							<input type="text" class="form-control" placeholder="Search for..." ng-model="query" ng-init="query = '#burningman'">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="submit">Search!</button>
+							</span>
+					    </div>
+					</form>
+			    </div>
+		    </div>
 
-			<div>All tweets: {{ allTweetsCount }}</div>
-			<div>Geo tweets: {{ geoTweetsCount }}</div>
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+				    <div class="btn-group btn-group-justified">
+				        <label class="btn btn-primary" ng-model="showGeo" btn-radio="true">
+				        show<span ng-show="showGeo">ing</span> <span class="badge" ng-show="tweets.length">{{ geoTweetsCount }}</span> geo tweets</label>
+				        <label class="btn btn-primary" ng-model="showGeo" btn-radio="false">
+				        show<span ng-show="!showGeo">ing</span> all <span class="badge" ng-show="tweets.length">{{ allTweetsCount }}</span> tweets</label>
+				        <label class="btn btn-success" ng-model="enableGeolocation" btn-checkbox>prefere tweets from location</label>
+				    </div>
+			    </div>
+		    </div>
 
-			<div ng-show="geoTweetsCount / allTweetsCount < 0.5">
-				Only {{ geoTweetsCount / allTweetsCount }}% of found tweets have geolocation information.
-				You could get better ratio, if you set prefered location in the map below:
-			</div>
+		    <div class="row" collapse="!enableGeolocation">
+		    	<div class="col-md-8 col-md-offset-2">
+				    <div class="panel panel-default">
+			            <div class="panel-heading">
+			              	<h3 class="panel-title">Drag and zoom map to set the prefered locations of tweets</h3>
+			            </div>
+			            <div class="panel-body main-map-panel-body">
+			            	<leaflet class="main-map" center="formMapCenter" ></leaflet>
+			            </div>
+			        </div>
+				</div>
+		    </div>
 
-			<label for="geofilter">Show only geo tweets: </label>
-			<input id="geofilter" type="checkbox" ng-model="showGeo" ng-init="showGeo=true">
-
-			<hr/>
-
-			<label for="geolocation">Prefere tweets from specific location: </label>
-			<input id="geolocation" type="checkbox" ng-model="enableGeolocation" ng-init="enableGeolocation=false">
-			<leaflet style="width: 500px; height: 300px" center="formMapCenter" ></leaflet>
-			<div>map lat: {{ formMapCenter.lat }}</div>
-			<div>map lng: {{ formMapCenter.lng }}</div>
-
-			<hr/>
+		    <div class="row text-left" ng-show="error">
+		    	<div class="col-md-8 col-md-offset-2">
+				    <div class="alert alert-danger" role="alert">
+				    	<h4>ERRORS:</h4>
+				    	<ul>
+							<li ng-repeat="error in error.errors">{{ error.message }}</li>
+						</ul>
+				    </div>
+				</div>
+		    </div>
 		</div>
 
-		<ul infinite-scroll="next()" infinite-scroll-distance="0.3">
-			<li ng-repeat="tweet in filtered = (tweets | filter:geoFilter)" ng-class="{geo: tweet.coordinates !== null}" ng-controller="ItemController">
-				<h2>{{ tweet.user.name }}</h2>
-				<p>{{ tweet.text }}</p>
-				<div ng-if="tweet.coordinates !== null" ng-controller="GeoItemController">
-					<leaflet class="map" center="center" markers="markers" id="tweet.id" ></leaflet>
+		<div class="container">
+			<div infinite-scroll="next()" infinite-scroll-distance="0.3">
+				<div class="row tweet" ng-repeat="tweet in filtered = (tweets | filter:geoFilter)" ng-class="{geo: tweet.coordinates !== null}" ng-controller="ItemController">
+					<div class="col-md-8 col-md-offset-2">
+						<div class="panel panel-default">
+				            <div class="panel-heading" ng-style="{'background-image': 'url(' + tweet.user.profile_image_url + ')'}">
+				              	<h3 class="panel-title">
+				              		<strong>{{ tweet.user.name }}</strong>
+				              		<a href="https://twitter.com/{{ tweet.user.screen_name }}" target="_blank">@{{ tweet.user.screen_name }}</a>
+				              		<span class="date">{{ tweet.created_at | limitTo: 16 }}</span>
+				              	</h3>
+				            </div>
+				            <div class="panel-body">
+				            	<p>{{ tweet.text }}</p>
+				            	<div ng-if="tweet.coordinates !== null" ng-controller="GeoItemController">
+				            		<leaflet class="map" center="center" markers="markers" id="{{ tweet.id }}" ></leaflet>
+				            	</div>
+				            </div>
+				        </div>
+					</div>
 				</div>
-			</li>
-		</ul>
+			</div>
+		</div>
 	</body>
 </html>

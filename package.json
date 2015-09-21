@@ -18,7 +18,9 @@
   "homepage": "https://github.com/peterhudec/twitter-search#readme",
   "dependencies": {
     "angular": "^1.4.6",
+    "angular-bootstrap-npm": "^0.13.3",
     "angular-leaflet-directive": "^0.8.5",
+    "bootstrap": "^3.3.5",
     "express": "^4.13.3",
     "leaflet": "^0.7.5",
     "ng-infinite-scroll": "^1.2.0",

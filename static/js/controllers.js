@@ -1,19 +1,26 @@
-var tweetSearchApp = angular.module('tweetSearchApp', ["leaflet-directive", "infinite-scroll"]);
+var tweetSearchApp = angular.module('tweetSearchApp', ["leaflet-directive", "infinite-scroll", 'ui.bootstrap']);
 
 tweetSearchApp.controller('TweetListController', ['$scope', '$http', 'leafletData', function ($scope, $http, leafletData) {
 	angular.extend($scope, {
 			loading: false,
+			showGeo: true,
 			allTweetsCount: 0,
 			geoTweetsCount: 0,
       formMapCenter: {
-          lat: 0,
-          lng: 0,
+          lat: 30,
+          lng: 100,
           zoom: 2
       },
       defaults: {
           scrollWheelZoom: false
       }
   });
+
+	leafletData.getMap('main-map').then(function(map) {
+    setTimeout(function () {
+    	map.invalidateSize();
+    });
+	});
 
   var success = function (data) {
 		$scope.loading = false;
@@ -78,7 +85,7 @@ tweetSearchApp.controller('ItemController', function ($scope) {
 	
 });
 
-tweetSearchApp.controller('GeoItemController', function ($scope) {
+tweetSearchApp.controller('GeoItemController', ['$scope', 'leafletData', function ($scope, leafletData) {
 	var coordinates = $scope.$parent.tweet.coordinates.coordinates;
 
 	angular.extend($scope, {
@@ -94,4 +101,11 @@ tweetSearchApp.controller('GeoItemController', function ($scope) {
 			}
 		}
 	});
-});
+
+	leafletData.getMap($scope.$parent.tweet.id).then(function(map) {
+	    setTimeout(function () {
+	    	map.invalidateSize();
+	    });
+	});
+
+}]);

@@ -1,9 +1,49 @@
-.geo {
-	background-color: lightgrey;
+/* Angular bootstrap fix */
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+
+
+.row {
+  margin-top: 20px;
+  margin-bottom: 0;
 }
 
-.map {
-	width: 300px;
+.main-map-panel-body {
+	padding: 0;
+}
+
+.main-map {
+	width: 100%;
 	height: 200px;
-	background-color: grey;
+}
+
+
+/* Tweet */
+
+.tweet .date {
+	float: right;
+}
+
+.tweet .panel-heading {
+	background-repeat: no-repeat;
+}
+
+.tweet .panel-title {
+	padding-left: 45px;
+}
+
+.geo.tweet .panel-body {
+	padding: 0;
+}
+
+.geo.tweet .panel-body p {
+	padding: 15px;
+	float: left;
+	width: 50%;
+}
+
+.geo.tweet .map {
+	width: 50%;
+	height: 150px;
+	float: right;
 }
