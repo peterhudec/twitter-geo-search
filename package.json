@@ -20,6 +20,7 @@
     "angular": "^1.4.6",
     "angular-bootstrap-npm": "^0.13.3",
     "angular-leaflet-directive": "^0.8.5",
+    "angular-simple-logger": "0.0.2",
     "bootstrap": "^3.3.5",
     "express": "^4.13.3",
     "leaflet": "^0.7.5",
