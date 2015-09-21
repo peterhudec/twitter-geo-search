@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>Twitter Search</title>
+		<title>Twitter Geo Search</title>
 
 		<script src="/angular/angular.js"></script>
 		<script src="/leaflet/dist/leaflet.js"></script>
@@ -28,13 +28,13 @@
 	<body ng-controller="TweetListController">
 
 		<div class="jumbotron text-center">
-			<h1>Twitter Search</h1>
+			<h1>Twitter Geo Search</h1>
 
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2">
 					<form ng-submit="search()">
 						<div class="input-group input-group-lg">
-							<input type="text" class="form-control" placeholder="Search for..." ng-model="query" ng-init="query = '#burningman'">
+							<input type="text" class="form-control" ng-model="query" placeholder="Search something, for example #burningman">
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="submit">Search!</button>
 							</span>
@@ -50,14 +50,14 @@
 				        show<span ng-show="showGeo">ing</span> <span class="badge" ng-show="tweets.length">{{ geoTweetsCount }}</span> geo tweets</label>
 				        <label class="btn btn-primary" ng-model="showGeo" btn-radio="false">
 				        show<span ng-show="!showGeo">ing</span> all <span class="badge" ng-show="tweets.length">{{ allTweetsCount }}</span> tweets</label>
-				        <label class="btn btn-success" ng-model="enableGeolocation" btn-checkbox>prefere tweets from location</label>
+				        <label class="btn btn-warning" ng-model="enableGeolocation" btn-checkbox>set prefered location</label>
 				    </div>
 			    </div>
 		    </div>
 
 		    <div class="row" collapse="!enableGeolocation">
 		    	<div class="col-md-8 col-md-offset-2">
-				    <div class="panel panel-default">
+				    <div class="panel panel-warning">
 			            <div class="panel-heading">
 			              	<h3 class="panel-title">Drag and zoom map to set the prefered locations of tweets</h3>
 			            </div>
@@ -65,6 +65,17 @@
 			            	<leaflet class="main-map" center="formMapCenter" ></leaflet>
 			            </div>
 			        </div>
+				</div>
+		    </div>
+
+		    <div class="row text-left" ng-show="(geoTweetsCount / allTweetsCount < 0.5) && !enableGeolocation">
+		    	<div class="col-md-8 col-md-offset-2">
+		            <div class="alert alert-info" role="alert">
+					    <div >
+							Only {{ geoTweetsCount / allTweetsCount * 100 | number : 1 }}% of found tweets have geolocation information.<br/>
+							You can get better ratio, if you turn on the <strong>set prefered location</strong> button above.
+						</div>
+				    </div>
 				</div>
 		    </div>
 

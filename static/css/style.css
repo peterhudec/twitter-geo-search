@@ -1,7 +1,9 @@
 /* Angular bootstrap fix */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
-
+.jumbotron {
+	padding: 24px;
+}
 
 .row {
   margin-top: 20px;
@@ -17,15 +19,17 @@
 	height: 200px;
 }
 
-
-/* Tweet */
-
 .tweet .date {
 	float: right;
 }
 
 .tweet .panel-heading {
 	background-repeat: no-repeat;
+	background-color: #eee;
+}
+
+.tweet .panel {
+	background-color: #f2f2f2;
 }
 
 .tweet .panel-title {
@@ -46,4 +50,5 @@
 	width: 50%;
 	height: 150px;
 	float: right;
+	border-left: solid #ddd 1px;
 }
