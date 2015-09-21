@@ -1,118 +1,118 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="tweetSearchApp">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>Twitter Geo Search</title>
+        <title>Twitter Geo Search</title>
 
-		<script src="/angular/angular.js"></script>
-		<script src="/leaflet/dist/leaflet.js"></script>
-		<script src="/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
-		<script src="/ng-infinite-scroll/build/ng-infinite-scroll.min.js"></script>
-		<script src="/angular-bootstrap-npm/dist/angular-bootstrap.min	.js"></script>
-		<script src="/js/controllers.js"></script>
+        <script src="/angular/angular.js"></script>
+        <script src="/leaflet/dist/leaflet.js"></script>
+        <script src="/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+        <script src="/ng-infinite-scroll/build/ng-infinite-scroll.min.js"></script>
+        <script src="/angular-bootstrap-npm/dist/angular-bootstrap.min    .js"></script>
+        <script src="/js/controllers.js"></script>
 
-		<link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="/leaflet/dist/leaflet.css" />
-		<link rel="stylesheet" type="text/css" href="/css/style.css">
+        <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/leaflet/dist/leaflet.css" />
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
 
-		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	    <!--[if lt IE 9]>
-	      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-	      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	    <![endif]-->
-	</head>
-	<body ng-controller="TweetListController">
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body ng-controller="TweetListController">
 
-		<div class="jumbotron text-center">
-			<h1>Twitter Geo Search</h1>
+        <div class="jumbotron text-center">
+            <h1>Twitter Geo Search</h1>
 
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2">
-					<form ng-submit="search()">
-						<div class="input-group input-group-lg">
-							<input type="text" class="form-control" ng-model="query" placeholder="Search something, for example #burningman">
-							<span class="input-group-btn">
-								<button class="btn btn-default" type="submit">Search!</button>
-							</span>
-					    </div>
-					</form>
-			    </div>
-		    </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <form ng-submit="search()">
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control" ng-model="query" placeholder="Search something, for example #burningman">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit">Search!</button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2">
-				    <div class="btn-group btn-group-justified">
-				        <label class="btn btn-primary" ng-model="showGeo" btn-radio="true">
-				        show<span ng-show="showGeo">ing</span> <span class="badge" ng-show="tweets.length">{{ geoTweetsCount }}</span> geo tweets</label>
-				        <label class="btn btn-primary" ng-model="showGeo" btn-radio="false">
-				        show<span ng-show="!showGeo">ing</span> all <span class="badge" ng-show="tweets.length">{{ allTweetsCount }}</span> tweets</label>
-				        <label class="btn btn-warning" ng-model="enableGeolocation" btn-checkbox>set prefered location</label>
-				    </div>
-			    </div>
-		    </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="btn-group btn-group-justified">
+                        <label class="btn btn-primary" ng-model="showGeo" btn-radio="true">
+                        show<span ng-show="showGeo">ing</span> <span class="badge" ng-show="tweets.length">{{ geoTweetsCount }}</span> geo tweets</label>
+                        <label class="btn btn-primary" ng-model="showGeo" btn-radio="false">
+                        show<span ng-show="!showGeo">ing</span> all <span class="badge" ng-show="tweets.length">{{ allTweetsCount }}</span> tweets</label>
+                        <label class="btn btn-warning" ng-model="enableGeolocation" btn-checkbox>set prefered location</label>
+                    </div>
+                </div>
+            </div>
 
-		    <div class="row" collapse="!enableGeolocation">
-		    	<div class="col-md-8 col-md-offset-2">
-				    <div class="panel panel-warning">
-			            <div class="panel-heading">
-			              	<h3 class="panel-title">Drag and zoom map to set the prefered locations of tweets</h3>
-			            </div>
-			            <div class="panel-body main-map-panel-body">
-			            	<leaflet class="main-map" center="formMapCenter" ></leaflet>
-			            </div>
-			        </div>
-				</div>
-		    </div>
+            <div class="row" collapse="!enableGeolocation">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                              <h3 class="panel-title">Drag and zoom map to set the prefered locations of tweets</h3>
+                        </div>
+                        <div class="panel-body main-map-panel-body">
+                            <leaflet class="main-map" center="formMapCenter" ></leaflet>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-		    <div class="row text-left" ng-show="(geoTweetsCount / allTweetsCount < 0.5) && !enableGeolocation">
-		    	<div class="col-md-8 col-md-offset-2">
-		            <div class="alert alert-info" role="alert">
-					    <div >
-							Only {{ geoTweetsCount / allTweetsCount * 100 | number : 1 }}% of found tweets have geolocation information.<br/>
-							You can get better ratio, if you turn on the <strong>set prefered location</strong> button above.
-						</div>
-				    </div>
-				</div>
-		    </div>
+            <div class="row text-left" ng-show="(geoTweetsCount / allTweetsCount < 0.5) && !enableGeolocation">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="alert alert-info" role="alert">
+                        <div >
+                            Only {{ geoTweetsCount / allTweetsCount * 100 | number : 1 }}% of found tweets have geolocation information.<br/>
+                            You can get better ratio, if you turn on the <strong>set prefered location</strong> button above.
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-		    <div class="row text-left" ng-show="error">
-		    	<div class="col-md-8 col-md-offset-2">
-				    <div class="alert alert-danger" role="alert">
-				    	<h4>ERRORS:</h4>
-				    	<ul>
-							<li ng-repeat="error in error.errors">{{ error.message }}</li>
-						</ul>
-				    </div>
-				</div>
-		    </div>
-		</div>
+            <div class="row text-left" ng-show="error">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="alert alert-danger" role="alert">
+                        <h4>ERRORS:</h4>
+                        <ul>
+                            <li ng-repeat="error in error.errors">{{ error.message }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<div class="container">
-			<div infinite-scroll="next()" infinite-scroll-distance="0.3">
-				<div class="row tweet" ng-repeat="tweet in filtered = (tweets | filter:geoFilter)" ng-class="{geo: tweet.coordinates !== null}" ng-controller="ItemController">
-					<div class="col-md-8 col-md-offset-2">
-						<div class="panel panel-default">
-				            <div class="panel-heading" ng-style="{'background-image': 'url(' + tweet.user.profile_image_url + ')'}">
-				              	<h3 class="panel-title">
-				              		<strong>{{ tweet.user.name }}</strong>
-				              		<a href="https://twitter.com/{{ tweet.user.screen_name }}" target="_blank">@{{ tweet.user.screen_name }}</a>
-				              		<span class="date">{{ tweet.created_at | limitTo: 16 }}</span>
-				              	</h3>
-				            </div>
-				            <div class="panel-body">
-				            	<p>{{ tweet.text }}</p>
-				            	<div ng-if="tweet.coordinates !== null" ng-controller="GeoItemController">
-				            		<leaflet class="map" center="center" markers="markers" id="{{ tweet.id }}" ></leaflet>
-				            	</div>
-				            </div>
-				        </div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</body>
+        <div class="container">
+            <div infinite-scroll="next()" infinite-scroll-distance="0.3">
+                <div class="row tweet" ng-repeat="tweet in filtered = (tweets | filter:geoFilter)" ng-class="{geo: tweet.coordinates !== null}" ng-controller="ItemController">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" ng-style="{'background-image': 'url(' + tweet.user.profile_image_url + ')'}">
+                                  <h3 class="panel-title">
+                                      <strong>{{ tweet.user.name }}</strong>
+                                      <a href="https://twitter.com/{{ tweet.user.screen_name }}" target="_blank">@{{ tweet.user.screen_name }}</a>
+                                      <span class="date">{{ tweet.created_at | limitTo: 16 }}</span>
+                                  </h3>
+                            </div>
+                            <div class="panel-body">
+                                <p>{{ tweet.text }}</p>
+                                <div ng-if="tweet.coordinates !== null" ng-controller="GeoItemController">
+                                    <leaflet class="map" center="center" markers="markers" id="{{ tweet.id }}" ></leaflet>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
